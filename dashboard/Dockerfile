@@ -11,7 +11,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o dashboard
 
 FROM alpine:3.17
 
-RUN apk add tzdata && \
+RUN apk add tzdata curl && \
     cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
     echo "Asia/Tokyo" > /etc/timezone && \
     apk del tzdata

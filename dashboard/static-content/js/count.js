@@ -19,12 +19,12 @@ let createRequestUri = () => {
 
   var started_at = document.getElementById("started_at").value;
   if (started_at) {
-    params.append("started_at", started_at + "T00:00:00Z");
+    params.append("started_at", started_at + "T00:00:00+09:00");
   }
 
   var finished_at = document.getElementById("finished_at").value;
   if (finished_at) {
-    params.append("finished_at", finished_at + "T00:00:00Z");
+    params.append("finished_at", finished_at + "T00:00:00+09:00");
   }
   uri += "?" + new URLSearchParams(params).toString();
   return uri;

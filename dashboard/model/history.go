@@ -10,6 +10,6 @@ type History struct {
   WorkflowRef    string `gorm:"column:workflow_ref" json:"workflow_ref"`
   JobName        string `gorm:"column:job_name" json:"job_name"`
   Status         string `gorm:"column:status" json:"status"`
-  StartedAt      time.Time `gorm:"column:started_at" json:"started_at"`
-  FinishedAt     time.Time `gorm:"column:finished_at" json:"finished_at"`
+  StartedAt      *time.Time `gorm:"column:started_at" json:"started_at"`
+  FinishedAt     *time.Time `gorm:"column:finished_at" json:"finished_at"`
 }

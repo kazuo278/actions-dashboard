@@ -5,8 +5,8 @@ CREATE TABLE IF NOT EXISTS "histories" (
   "workflow_ref"  varchar(100) NOT NULL,
   "job_name" varchar(100) NOT NULL,
   "status" varchar(10) NOT NULL DEFAULT 'STARTED',
-  "started_at" timestamp NOT NULL DEFAULT 'now',
-  "finished_at" timestamp,
+  "started_at" timestamp WITH TIME ZONE NOT NULL DEFAULT 'now',
+  "finished_at" timestamp WITH TIME ZONE,
   PRIMARY KEY("repository_id","run_id")
 );
 

@@ -28,12 +28,12 @@ let createRequestUri = () => {
 
   var started_at = document.getElementById("started_at").value;
   if (started_at) {
-    params.append("started_at", started_at + "T00:00:00Z");
+    params.append("started_at", started_at + "T00:00:00+09:00");
   }
 
   var finished_at = document.getElementById("finished_at").value;
   if (finished_at) {
-    params.append("finished_at", finished_at + "T00:00:00Z");
+    params.append("finished_at", finished_at + "T00:00:00+09:00");
   }
 
   var status = document.getElementById("status").value
@@ -46,6 +46,9 @@ let createRequestUri = () => {
 
 // 日付変換する関数
 let formatDate = (dateStr) => {
+  if (!dateStr){
+    return "-"
+  }
   date = new Date(dateStr);
   var year = date.getFullYear().toString().padStart(4, "0");
   var month = (date.getMonth() + 1).toString().padStart(2, "0");

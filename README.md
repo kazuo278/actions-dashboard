@@ -11,7 +11,7 @@
     ```sh
     $ WORKFLOW_REF=$(echo $GITHUB_WORKFLOW_REF | sed "s%$GITHUB_REPOSITORY/%%")
     $ curl -X POST ${DASHBOARD_APP_HOST}/actions/history -H 'Content-Type: application/json' -d @- <<EOM
-    {"repository_id":"$GITHUB_REPOSITORY_ID", "repository_name":"$GITHUB_REPOSITORY", "run_id":"$GITHUB_RUN_ID", "workflow_ref":"$WORKFLOW_REF", "job":"$GITHUB_JOB"}
+    {"repository_id":"$GITHUB_REPOSITORY_ID", "repository_name":"$GITHUB_REPOSITORY", "run_id":"$GITHUB_RUN_ID", "workflow_ref":"$WORKFLOW_REF", "job_name":"$GITHUB_JOB"}
     EOM
     ```
 
@@ -36,7 +36,8 @@
   ```
   docker compose start postgres
   docker compose start pgweb
-  DATABASE_URL=postgres://appuser:password@localhost:5432/github-actions?sslmode=disable go run
+  cd dashboard
+  DATABASE_URL=postgres://appuser:password@localhost:5432/github-actions?sslmode=disable go run .
   ```
 
 - ローカルアプリビルド実行

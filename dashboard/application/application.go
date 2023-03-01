@@ -21,14 +21,13 @@ func CreateHistoryWithStarted(repositoryId string, repositoryName string, runId 
 		repository.RepositoryName = repositoryName
 		database.CreateRepository(repository)
 	}
-	// 実行履歴を登録
 	history := new(model.History)
 	history.RepositoryId = repositoryId
 	history.RunId = runId
 	history.WorkflowRef = workflowRef
 	history.JobName = jobName
 	history.Status = "STARTED"
-	history.StartedAt = time.Now()
+	history.StartedAt = NowJST()
 	database.CreateHistory(history)
 
 	return history
@@ -39,7 +38,7 @@ func UpdateHistoryWithFinished(repositoryId string, runId string) *model.History
 	// 更新対象を取得
 	history := database.GetHistoryById(repositoryId, runId)
 	// ステータスを変更
-	history.FinishedAt = time.Now()
+	history.FinishedAt = NowJST()
 	history.Status = "FINISHED"
 	// 更新
 	database.UpdateHistory(history)
@@ -62,4 +61,13 @@ func GetHistoryCount(repositoryName string, startedAt string, finishedAt string)
 	result := new(custom.HistoryCounterResponse)
 	result.Counts = database.GetHistryCount(repositoryName, startedAt, finishedAt)
 	return result
+}
+
+func NowJST() *time.Time {
+	jst, err := time.LoadLocation("Asia/Tokyo")
+	if err != nil {
+		panic(err)
+	}
+	nowJST := time.Now().In(jst)
+	return &nowJST
 }

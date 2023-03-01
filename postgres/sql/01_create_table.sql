@@ -2,6 +2,8 @@ DROP TABLE IF EXISTS "histories" CASCADE;
 CREATE TABLE IF NOT EXISTS "histories" (
   "repository_id" varchar(100) NOT NULL,
   "run_id" varchar(100) NOT NULL,
+  "workflow_ref"  varchar(100) NOT NULL,
+  "job_name" varchar(100) NOT NULL,
   "status" varchar(10) NOT NULL DEFAULT 'STARTED',
   "started_at" timestamp NOT NULL DEFAULT 'now',
   "finished_at" timestamp,

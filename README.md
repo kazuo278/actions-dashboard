@@ -9,9 +9,9 @@
   - ジョブ実行開始履歴の登録
 
     ```sh
-    $ REPOSITORY_NAME=$(cat $GITHUB_EVENT_PATH | jq -r .repository.full_name)
+    $ WORKFLOW_REF=$(echo $GITHUB_WORKFLOW_REF | sed "s%$GITHUB_REPOSITORY/%%")
     $ curl -X POST ${DASHBOARD_APP_HOST}/actions/history -H 'Content-Type: application/json' -d @- <<EOM
-    {"repository_id":"$GITHUB_REPOSITORY_ID", "repository_name":"$REPOSITORY_NAME", "run_id":"$GITHUB_RUN_ID"}
+    {"repository_id":"$GITHUB_REPOSITORY_ID", "repository_name":"$GITHUB_REPOSITORY", "run_id":"$GITHUB_RUN_ID", "workflow_ref":"$WORKFLOW_REF", "job":"$GITHUB_JOB"}
     EOM
     ```
 
@@ -25,16 +25,27 @@
 
 ## アプリ実行
 
-- ビルド
+- コンテナ実行
 
-  ```sh
-  $ cd dashboard
-  $ go CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo
+  ```
+  docker compose up
   ```
 
-- 実行
+- ローカル実行(開発モード)
+
+  ```
+  docker compose start postgres
+  docker compose start pgweb
+  DATABASE_URL=postgres://appuser:password@localhost:5432/github-actions?sslmode=disable go run
+  ```
+
+- アプリビルド
 
   ```sh
-  $ cd dashboard
-  $ ./dashboard
+  cd dashboard
+  # linux用
+  CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo
+  # ビルド環境用
+  go build
   ```
+

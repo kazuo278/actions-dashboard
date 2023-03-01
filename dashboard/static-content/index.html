@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <title>GitHub Actions Dashboard</title>
   <link href="css/bootstrap-5.0.2.min.css" rel="stylesheet">
+  <link href="css/common.css" rel="stylesheet">
   <link href="css/dashboard.css" rel="stylesheet">
   <script src="js/bootstrap-5.0.2.bundle.min.js"></script>
   <script src="js/common.js"></script>
@@ -15,7 +16,8 @@
   <nav class="navbar navbar-dark bg-dark navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">GitHub Actions Dashboard</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
@@ -34,14 +36,18 @@
     <p>実行履歴検索</p>
     <div id="search_box" class="p-3">
       <p>検索条件</p>
-      <div id="search" class="row g-3 border p-3">
+      <div id="search" class="row g-3 border p-3 m-3">
         <div class="col-md-4">
-          <label for="repository_id" class="form-label">リポジトリID</label>
-          <input id="repository_id" class="form-control" type="text" />
-        </div>
-        <div class="col-md-8">
           <label for="repository_name" class="form-label">リポジトリ名</label>
           <input id="repository_name" class="form-control" type="text" />
+        </div>
+        <div class="col-md-5">
+          <label for="workflow_ref" class="form-label">Workflow Ref</label>
+          <input id="workflow_ref" class="form-control" type="text" />
+        </div>
+        <div class="col-md-3">
+          <label for="job_name" class="form-label">JOB名</label>
+          <input id="job_name" class="form-control" type="text" />
         </div>
         <div class="col-md-4">
           <label for="started_at" class="form-label">開始日</label>
@@ -64,26 +70,32 @@
         </div>
       </div>
     </div>
-    <div id="result_box" class="row p-3">
+    <div id="result_box" class="p-3">
       <p>実行履歴</p>
-      <div id="total_records">
+      <div id="total_records" class="mx-3 mb-3">
         <!-- 全件数を動的に埋め込む -->
       </div>
-      <table id="result_table" class="table table-sm">
-        <thead>
-          <tr>
-            <th scope="col">リポジトリID</th>
-            <th scope="col">リポジトリ名</th>
-            <th scope="col">RUN ID</th>
-            <th scope="col">実行ステータス</th>
-            <th scope="col">開始日時</th>
-            <th scope="col">終了日時</th>
-          </tr>
-        </thead>
-        <tbody id="table_body">
-          <!-- 検索結果を動的に埋め込む -->
-        </tbody>
-      </table>
+      <div id="result_table_box" class="row m-3">
+        <table id="result_table" class="table table-sm">
+          <thead>
+            <tr>
+              <!--表示しないが詳細表示したくなった時のため値は保持しておく-->
+              <th scope="col" class="d-none">リポジトリID</th>
+              <!--表示しないが詳細表示したくなった時のため値は保持しておく-->
+              <th scope="col" class="d-none">RUN ID</th>
+              <th scope="col">リポジトリ名</th>
+              <th scope="col">Workflow Ref</th>
+              <th scope="col">JOB名</th>
+              <th scope="col">ステータス</th>
+              <th scope="col">開始日時</th>
+              <th scope="col">終了日時</th>
+            </tr>
+          </thead>
+          <tbody id="table_body">
+            <!-- 検索結果を動的に埋め込む -->
+          </tbody>
+        </table>
+      </div>
       <nav aria-label="Page navigation">
         <ul id="page_list" class="pagination pagination-sm justify-content-center">
           <!-- ページネーターを動的に埋め込む -->

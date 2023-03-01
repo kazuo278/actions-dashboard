@@ -11,14 +11,19 @@ let createRequestUri = () => {
   params.append("limit", pageSize);
   params.append("offset", (currentPageNum - 1) * pageSize);
 
-  var repository_id = document.getElementById("repository_id").value;
-  if(repository_id){
-    params.append("repository_id", repository_id);
-  }
-
   var repository_name = document.getElementById("repository_name").value;
   if(repository_name){
     params.append("repository_name", repository_name);
+  }
+
+  var workflow_ref = document.getElementById("workflow_ref").value;
+  if(workflow_ref){
+    params.append("workflow_ref", workflow_ref);
+  }
+
+  var job_name = document.getElementById("job_name").value;
+  if(job_name){
+    params.append("job_name", job_name);
   }
 
   var started_at = document.getElementById("started_at").value;
@@ -85,29 +90,48 @@ let displayRedcords = (records) => {
   records.forEach(record => {
     var tr = document.createElement("tr");
     // リポジトリID
-    var td1 = document.createElement("td");
-    td1.textContent = record.repository_id;
-    tr.appendChild(td1);
-    // リポジトリ名
-    var td2 = document.createElement("td");
-    td2.textContent = record.repository_name;
-    tr.appendChild(td2);
+    var tdRepoId = document.createElement("td");
+    // 表示しないが詳細表示したくなった時のため値は保持しておく
+    tdRepoId.classList.add("d-none");
+    tdRepoId.textContent = record.repository_id;
+    tr.appendChild(tdRepoId);
+
     // RUN　ID
-    var td3 = document.createElement("td");
-    td3.textContent = record.run_id;
-    tr.appendChild(td3);
+    var tdRunId = document.createElement("td");
+    tdRunId.textContent = record.run_id;
+    // 表示しないが詳細表示したくなった時のため値は保持しておく
+    tdRunId.classList.add("d-none");
+    tr.appendChild(tdRunId);
+
+    // リポジトリ名
+    var tdRepoName = document.createElement("td");
+    tdRepoName.textContent = record.repository_name;
+    tr.appendChild(tdRepoName);
+
+    // ワークフローRef
+    var tdWorkflowRef = document.createElement("td");
+    tdWorkflowRef.textContent = record.workflow_ref;
+    tr.appendChild(tdWorkflowRef);
+
+    // JOB名
+    var tdJobName = document.createElement("td");
+    tdJobName.textContent = record.job_name;
+    tr.appendChild(tdJobName);
+
     // 実行ステータス
-    var td4 = document.createElement("td");
-    td4.appendChild(formatStatus(record.status));
-    tr.appendChild(td4);
+    var tdStatus = document.createElement("td");
+    tdStatus.appendChild(formatStatus(record.status));
+    tr.appendChild(tdStatus);
+
     // 開始日時
-    var td5 = document.createElement("td");
-    td5.textContent = formatDate(record.started_at);
-    tr.appendChild(td5);
+    var tdStartedAt = document.createElement("td");
+    tdStartedAt.textContent = formatDate(record.started_at);
+    tr.appendChild(tdStartedAt);
+
     // 終了日時
-    var td6 = document.createElement("td");
-    td6.textContent = formatDate(record.finished_at);
-    tr.appendChild(td6);
+    var tdFinishedAt = document.createElement("td");
+    tdFinishedAt.textContent = formatDate(record.finished_at);
+    tr.appendChild(tdFinishedAt);
 
     tbody.appendChild(tr);
   });

@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <title>GitHub Actions Dashboard</title>
   <link href="css/bootstrap-5.0.2.min.css" rel="stylesheet">
+  <link href="css/common.css" rel="stylesheet">
   <link href="css/count.css" rel="stylesheet">
   <script src="js/bootstrap-5.0.2.bundle.min.js"></script>
   <script src="js/common.js"></script>
@@ -35,7 +36,7 @@
     <p>実行回数検索</p>
     <div id="search_box" class="p-3">
       <p>検索条件</p>
-      <div id="search" class="row g-3 border p-3">
+      <div id="search" class="row g-3 border p-3 m-3">
         <div class="col-md-4">
           <label for="repository_name" class="form-label">リポジトリ名</label>
           <input id="repository_name" class="form-control" type="text" />
@@ -53,13 +54,15 @@
         </div>
       </div>
     </div>
-    <div id="result_box" class="row p-3">
-      <p>実行回数</p>
-      <table id="count_table" class="">
-        <tbody id="table_body">
-          <!-- 検索結果を動的に埋め込み -->
-        </tbody>
-      </table>
+    <div id="result_box" class="p-3">
+      <p>リポジトリごとの実行回数</p>
+      <div id="result_table_box" class="row m-3">
+        <table id="count_table">
+          <tbody id="table_body">
+            <!-- 検索結果を動的に埋め込み -->
+          </tbody>
+        </table>
+      </div>
     </div>
     <!-- 通知用トースト -->
     <div id="toast" class="toast align-items-center position-absolute top-0 end-0" role="alert" aria-live="assertive"

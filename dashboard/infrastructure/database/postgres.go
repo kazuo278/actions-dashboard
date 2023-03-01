@@ -30,7 +30,7 @@ func Init(){
 	}
 }
 
-func GetHistories(limit int, offset int, repositoryId string, repositoryName string, status string, startedAt string, finishedAt string) (*[]custom.HistoryRepository, int) {
+func GetHistories(limit int, offset int, repositoryId string, repositoryName string, workflowRef string, jobName string, status string, startedAt string, finishedAt string) (*[]custom.HistoryRepository, int) {
 	result := []custom.HistoryRepository{}
 	count := 0
 	sql := db.Table("histories").Select("histories.*, repositories.repository_name").Joins("left join repositories on repositories.repository_id = histories.repository_id")
@@ -44,6 +44,16 @@ func GetHistories(limit int, offset int, repositoryId string, repositoryName str
 	if repositoryName != "" {
 		sql.Where("repository_name LIKE ?", repositoryName + "%")
 		countSql.Where("repository_name LIKE ?", repositoryName + "%")
+	}
+
+	if workflowRef != "" {
+		sql.Where("workflow_ref LIKE ?", workflowRef + "%")
+		countSql.Where("workflow_ref LIKE ?", workflowRef + "%")
+	}
+
+	if jobName != "" {
+		sql.Where("job_name LIKE ?", jobName + "%")
+		countSql.Where("job_name LIKE ?", jobName + "%")
 	}
 
 	if status != "" {

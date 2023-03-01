@@ -13,7 +13,7 @@ import (
 )
 
 // 指定された件数の実行履歴を返す
-// GET: /actions/history?limit=<int>&offset=<int>&repository_id=<string>&repository_name=<string>&status=<string>&started_at=<string>&finished_at=<string>
+// GET: /actions/history?limit=<int>&offset=<int>&repository_id=<string>&repository_name=<string>&workflow_ref=<string>&job_name=<string>&status=<string>&started_at=<string>&finished_at=<string>
 func GetHistory(c echo.Context) error {
 	limitNum, err := strconv.Atoi(c.QueryParam("limit"))
 	if err != nil || limitNum >= 100 {
@@ -23,7 +23,7 @@ func GetHistory(c echo.Context) error {
 	if err != nil || offsetNum == 0 {
 		offsetNum = 0
 	}
-	result := application.GetHistories(limitNum, offsetNum, c.QueryParam("repository_id"), c.QueryParam("repository_name"), c.QueryParam("status"), c.QueryParam("started_at"), c.QueryParam("finished_at"))
+	result := application.GetHistories(limitNum, offsetNum, c.QueryParam("repository_id"), c.QueryParam("repository_name"), c.QueryParam("workflow_ref"), c.QueryParam("job_name"), c.QueryParam("status"), c.QueryParam("started_at"), c.QueryParam("finished_at"))
 	return c.JSON(http.StatusOK, result)
 }
 

@@ -46,8 +46,8 @@ func UpdateHistoryWithFinished(repositoryId string, runId string) *model.History
 }
 
 // 実行履歴を取得する
-func GetHistories(limit int, offset int, repositoryId string, repositoryName string, status string, startedAt string, finishedAt string) *custom.HistoryResponse {
-	histories, count:= database.GetHistories(limit, offset, repositoryId, repositoryName, status, startedAt, finishedAt)
+func GetHistories(limit int, offset int, repositoryId string, repositoryName string, workflowRef string, jobName string, status string, startedAt string, finishedAt string) *custom.HistoryResponse {
+	histories, count:= database.GetHistories(limit, offset, repositoryId, repositoryName, workflowRef, jobName, status, startedAt, finishedAt)
 	result := new(custom.HistoryResponse)
 	result.Histories = histories
 	result.Count = count

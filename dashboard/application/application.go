@@ -10,7 +10,7 @@ import (
 )
 
 // 実行履歴を開始ステータスで登録する
-func CreateHistoryWithStarted(repositoryId string, repositoryName string, runId string) *model.History {
+func CreateHistoryWithStarted(repositoryId string, repositoryName string, runId string, workflowRef string, jobName string) *model.History {
 	// リポジトリを取得
 	repository := database.GetRepositoryById(repositoryId)
 	if (*repository == model.Repository{}) {
@@ -25,6 +25,8 @@ func CreateHistoryWithStarted(repositoryId string, repositoryName string, runId 
 	history := new(model.History)
 	history.RepositoryId = repositoryId
 	history.RunId = runId
+	history.WorkflowRef = workflowRef
+	history.JobName = jobName
 	history.Status = "STARTED"
 	history.StartedAt = time.Now()
 	database.CreateHistory(history)

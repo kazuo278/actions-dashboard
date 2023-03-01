@@ -39,13 +39,13 @@
   DATABASE_URL=postgres://appuser:password@localhost:5432/github-actions?sslmode=disable go run
   ```
 
-- アプリビルド
+- ローカルアプリビルド実行
 
   ```sh
   cd dashboard
-  # linux用
+  # linux用ビルド
   CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo
-  # ビルド環境用
-  go build
+  cd ..
+  docker compose -f dokcer-compose-local.yaml up
   ```
 

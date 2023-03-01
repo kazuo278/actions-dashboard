@@ -16,6 +16,6 @@ RUN apk add tzdata && \
     echo "Asia/Tokyo" > /etc/timezone && \
     apk del tzdata
 COPY --from=builder /workspace/dashboard /app/dashboard
-COPY /static-content/ /static-content/
+COPY static-content/ /static-content/
 RUN chmod +x /app/dashboard
 ENTRYPOINT [ "/app/dashboard" ]

@@ -29,7 +29,7 @@ func GetHistory(c echo.Context) error {
 
 // 実行履歴を登録する
 // POST: /actions/history
-// { repository_id: <string>, repository_name: <string>, run_id: <string> }
+// { repository_id: <string>, repository_name: <string>, run_id: <string>, workflow_ref: <string>, job_name: <string> }
 func PostHistory(c echo.Context) error {
 	// WebSocketを確立したブラウザへ更新を通知
 	websocket.IsUpdated = true
@@ -37,7 +37,7 @@ func PostHistory(c echo.Context) error {
 	body := custom.HistoryRepository{}
 	c.Bind(&body)
 	// 実行履歴を登録
-	result := application.CreateHistoryWithStarted(body.RepositoryId, body.RepositoryName, body.RunId)
+	result := application.CreateHistoryWithStarted(body.RepositoryId, body.RepositoryName, body.RunId, body.WorkflowRef, body.JobName)
 	return c.JSON(http.StatusCreated, result)
 }
 

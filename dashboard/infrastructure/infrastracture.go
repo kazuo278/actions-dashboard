@@ -4,6 +4,6 @@ import (
 	"github/dashboard/infrastructure/database"
 )
 
-func Init(){
+func Init() {
 	database.Init()
 }

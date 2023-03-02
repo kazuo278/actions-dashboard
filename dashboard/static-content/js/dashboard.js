@@ -106,6 +106,13 @@ let displayRedcords = (records) => {
     tdRunId.classList.add("d-none");
     tr.appendChild(tdRunId);
 
+    // RUN ATTEMPT
+    var tdRunAttempt = document.createElement("td");
+    tdRunAttempt.textContent = record.run_attempt;
+    // 表示しないが詳細表示したくなった時のため値は保持しておく
+    tdRunAttempt.classList.add("d-none");
+    tr.appendChild(tdRunAttempt);
+
     // リポジトリ名
     var tdRepoName = document.createElement("td");
     tdRepoName.textContent = record.repository_name;

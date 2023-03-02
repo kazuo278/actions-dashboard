@@ -1,8 +1,8 @@
 package websocket
 
 import (
-	"log"
 	"container/list"
+	"log"
 	"time"
 
 	"github.com/labstack/echo/v4"

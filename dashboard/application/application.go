@@ -1,8 +1,8 @@
 package application
 
 import (
-	"time"
 	"log"
+	"time"
 
 	"github/dashboard/infrastructure/database"
 	"github/dashboard/model"
@@ -10,7 +10,7 @@ import (
 )
 
 // 実行履歴を開始ステータスで登録する
-func CreateHistoryWithStarted(repositoryId string, repositoryName string, runId string, workflowRef string, jobName string) *model.History {
+func CreateHistoryWithStarted(repositoryId string, repositoryName string, runId string, workflowRef string, jobName string, runAttempt string) *model.History {
 	// リポジトリを取得
 	repository := database.GetRepositoryById(repositoryId)
 	if (*repository == model.Repository{}) {
@@ -26,6 +26,7 @@ func CreateHistoryWithStarted(repositoryId string, repositoryName string, runId 
 	history.RunId = runId
 	history.WorkflowRef = workflowRef
 	history.JobName = jobName
+	history.RunAttempt = runAttempt
 	history.Status = "STARTED"
 	history.StartedAt = NowJST()
 	database.CreateHistory(history)
@@ -34,9 +35,9 @@ func CreateHistoryWithStarted(repositoryId string, repositoryName string, runId 
 }
 
 // 実行履歴を終了ステータスで更新する
-func UpdateHistoryWithFinished(repositoryId string, runId string) *model.History {
+func UpdateHistoryWithFinished(repositoryId string, runId string, jobName string, runAttempt string) *model.History {
 	// 更新対象を取得
-	history := database.GetHistoryById(repositoryId, runId)
+	history := database.GetHistoryById(repositoryId, runId, jobName, runAttempt)
 	// ステータスを変更
 	history.FinishedAt = NowJST()
 	history.Status = "FINISHED"
@@ -47,8 +48,8 @@ func UpdateHistoryWithFinished(repositoryId string, runId string) *model.History
 }
 
 // 実行履歴を取得する
-func GetHistories(limit int, offset int, repositoryId string, repositoryName string, workflowRef string, jobName string, status string, startedAt string, finishedAt string) *custom.HistoryResponse {
-	histories, count:= database.GetHistories(limit, offset, repositoryId, repositoryName, workflowRef, jobName, status, startedAt, finishedAt)
+func GetHistories(limit int, offset int, repositoryId string, repositoryName string, workflowRef string, jobName string, runAttempt string, status string, startedAt string, finishedAt string) *custom.HistoryResponse {
+	histories, count := database.GetHistories(limit, offset, repositoryId, repositoryName, workflowRef, jobName, runAttempt, status, startedAt, finishedAt)
 	result := new(custom.HistoryResponse)
 	result.Histories = histories
 	result.Count = count

@@ -11,7 +11,14 @@
     ```sh
     $ WORKFLOW_REF=$(echo $GITHUB_WORKFLOW_REF | sed "s%$GITHUB_REPOSITORY/%%")
     $ curl -X POST ${DASHBOARD_APP_HOST}/actions/history -H 'Content-Type: application/json' -d @- <<EOM
-    {"repository_id":"$GITHUB_REPOSITORY_ID", "repository_name":"$GITHUB_REPOSITORY", "run_id":"$GITHUB_RUN_ID", "workflow_ref":"$WORKFLOW_REF", "job_name":"$GITHUB_JOB"}
+    {
+      "repository_id":"$GITHUB_REPOSITORY_ID",
+      "repository_name":"$GITHUB_REPOSITORY",
+      "run_id":"$GITHUB_RUN_ID",
+      "workflow_ref":"$WORKFLOW_REF",
+      "job_name":"$GITHUB_JOB",
+      "run_attempt":"$GITHUB_RUN_ATTEMPT"
+    }
     EOM
     ```
 
@@ -19,7 +26,12 @@
 
     ```sh
     $ curl -X PUT ${DASHBOARD_APP_HOST}/actions/history -H 'Content-Type: application/json' -d @- <<EOM
-    {"repository_id":"$GITHUB_REPOSITORY_ID", "run_id":"$GITHUB_RUN_ID"}
+    {
+      "repository_id":"$GITHUB_REPOSITORY_ID",
+      "run_id":"$GITHUB_RUN_ID",
+      "job_name":"$GITHUB_JOB",
+      "run_attempt":"$GITHUB_RUN_ATTEMPT"
+    }
     EOM
     ```
 

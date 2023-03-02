@@ -13,7 +13,7 @@ import (
 )
 
 // 指定された件数の実行履歴を返す
-// GET: /actions/history?limit=<int>&offset=<int>&repository_id=<string>&repository_name=<string>&workflow_ref=<string>&job_name=<string>&status=<string>&started_at=<string>&finished_at=<string>
+// GET: /actions/history?limit=<int>&offset=<int>&repository_id=<string>&repository_name=<string>&workflow_ref=<string>&job_name=<string>&run_attempt=<string>&status=<string>&started_at=<string>&finished_at=<string>
 func GetHistory(c echo.Context) error {
 	limitNum, err := strconv.Atoi(c.QueryParam("limit"))
 	if err != nil || limitNum >= 100 {
@@ -23,13 +23,13 @@ func GetHistory(c echo.Context) error {
 	if err != nil || offsetNum == 0 {
 		offsetNum = 0
 	}
-	result := application.GetHistories(limitNum, offsetNum, c.QueryParam("repository_id"), c.QueryParam("repository_name"), c.QueryParam("workflow_ref"), c.QueryParam("job_name"), c.QueryParam("status"), c.QueryParam("started_at"), c.QueryParam("finished_at"))
+	result := application.GetHistories(limitNum, offsetNum, c.QueryParam("repository_id"), c.QueryParam("repository_name"), c.QueryParam("workflow_ref"), c.QueryParam("job_name"), c.QueryParam("run_attempt"), c.QueryParam("status"), c.QueryParam("started_at"), c.QueryParam("finished_at"))
 	return c.JSON(http.StatusOK, result)
 }
 
 // 実行履歴を登録する
 // POST: /actions/history
-// { repository_id: <string>, repository_name: <string>, run_id: <string>, workflow_ref: <string>, job_name: <string> }
+// { repository_id: <string>, repository_name: <string>, run_id: <string>, workflow_ref: <string>, job_name: <string>, run_attempt: <string> }
 func PostHistory(c echo.Context) error {
 	// WebSocketを確立したブラウザへ更新を通知
 	websocket.IsUpdated = true
@@ -37,7 +37,7 @@ func PostHistory(c echo.Context) error {
 	body := custom.HistoryRepository{}
 	c.Bind(&body)
 	// 実行履歴を登録
-	result := application.CreateHistoryWithStarted(body.RepositoryId, body.RepositoryName, body.RunId, body.WorkflowRef, body.JobName)
+	result := application.CreateHistoryWithStarted(body.RepositoryId, body.RepositoryName, body.RunId, body.WorkflowRef, body.JobName, body.RunAttempt)
 	return c.JSON(http.StatusCreated, result)
 }
 
@@ -51,7 +51,7 @@ func PutHistory(c echo.Context) error {
 	body := custom.HistoryRepository{}
 	c.Bind(&body)
 	// 実行履歴を登録
-	result := application.UpdateHistoryWithFinished(body.RepositoryId, body.RunId)
+	result := application.UpdateHistoryWithFinished(body.RepositoryId, body.RunId, body.JobName, body.RunAttempt)
 	return c.JSON(http.StatusOK, result)
 }
 

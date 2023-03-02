@@ -1,19 +1,20 @@
 package database
 
 import (
-	"os"
 	"log"
+	"os"
 
+	"database/sql"
 	"github/dashboard/model"
 	"github/dashboard/model/custom"
-	"database/sql"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 var db *gorm.DB
 
-func Init(){
+func Init() {
 	connectionUrl := os.Getenv("DATABASE_URL")
 	var err error
 	sqlDB, err := sql.Open("pgx", connectionUrl)
@@ -30,7 +31,7 @@ func Init(){
 	}
 }
 
-func GetHistories(limit int, offset int, repositoryId string, repositoryName string, workflowRef string, jobName string, status string, startedAt string, finishedAt string) (*[]custom.HistoryRepository, int) {
+func GetHistories(limit int, offset int, repositoryId string, repositoryName string, workflowRef string, jobName string, runAttempt string, status string, startedAt string, finishedAt string) (*[]custom.HistoryRepository, int) {
 	result := []custom.HistoryRepository{}
 	count := 0
 	sql := db.Table("histories").Select("histories.*, repositories.repository_name").Joins("left join repositories on repositories.repository_id = histories.repository_id")
@@ -42,18 +43,23 @@ func GetHistories(limit int, offset int, repositoryId string, repositoryName str
 	}
 
 	if repositoryName != "" {
-		sql.Where("repository_name LIKE ?", repositoryName + "%")
-		countSql.Where("repository_name LIKE ?", repositoryName + "%")
+		sql.Where("repository_name LIKE ?", repositoryName+"%")
+		countSql.Where("repository_name LIKE ?", repositoryName+"%")
 	}
 
 	if workflowRef != "" {
-		sql.Where("workflow_ref LIKE ?", workflowRef + "%")
-		countSql.Where("workflow_ref LIKE ?", workflowRef + "%")
+		sql.Where("workflow_ref LIKE ?", workflowRef+"%")
+		countSql.Where("workflow_ref LIKE ?", workflowRef+"%")
 	}
 
 	if jobName != "" {
-		sql.Where("job_name LIKE ?", jobName + "%")
-		countSql.Where("job_name LIKE ?", jobName + "%")
+		sql.Where("job_name LIKE ?", jobName+"%")
+		countSql.Where("job_name LIKE ?", jobName+"%")
+	}
+
+	if runAttempt != "" {
+		sql.Where("run_attempt = ? ", runAttempt)
+		countSql.Where("run_attempt = ?", runAttempt)
 	}
 
 	if status != "" {
@@ -77,9 +83,9 @@ func GetHistories(limit int, offset int, repositoryId string, repositoryName str
 	return &result, count
 }
 
-func GetHistoryById(repositoryId string, runId string) *model.History {
+func GetHistoryById(repositoryId string, runId string, jobName string, runAttempt string) *model.History {
 	result := model.History{}
-	db.Where("repository_id = ? AND run_id = ? ", repositoryId, runId).First(&result)
+	db.Where("repository_id = ? AND run_id = ? AND job_name = ? AND run_attempt = ?", repositoryId, runId, jobName, runAttempt).First(&result)
 	return &result
 }
 
@@ -104,12 +110,12 @@ func CreateRepository(repository *model.Repository) *model.Repository {
 	return repository
 }
 
-func GetHistryCount(repositoryName string, startedAt string, finishedAt string) (*[]custom.HistoryCounter) {
+func GetHistryCount(repositoryName string, startedAt string, finishedAt string) *[]custom.HistoryCounter {
 	result := []custom.HistoryCounter{}
 	sql := db.Table("histories").Select("repositories.repository_name, count(1) as count").Joins("left join repositories on repositories.repository_id = histories.repository_id")
 
 	if repositoryName != "" {
-		sql.Where("repository_name LIKE ?", repositoryName + "%")
+		sql.Where("repository_name LIKE ?", repositoryName+"%")
 	}
 
 	if startedAt != "" {

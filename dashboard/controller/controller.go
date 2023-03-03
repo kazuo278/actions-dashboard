@@ -18,5 +18,6 @@ func Init() {
 	e.POST("/actions/history", rest.PostHistory)
 	e.PUT("/actions/history", rest.PutHistory)
 	e.GET("/actions/count", rest.GetHistoryCount)
+	e.GET("/actions/time", rest.GetHistoryTime)
 	e.Logger.Fatal(e.Start(":8080"))
 }

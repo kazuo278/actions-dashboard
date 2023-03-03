@@ -62,3 +62,11 @@ func GetHistoryCount(c echo.Context) error {
 	result := application.GetHistoryCount(c.QueryParam("repository_name"), c.QueryParam("started_at"), c.QueryParam("finished_at"))
 	return c.JSON(http.StatusOK, result)
 }
+
+// リポジトリごとの実行時間(秒)を取得する
+// GET: /actions/time?repository_name=<string>&started_at=<string>&finished_at=<string>
+func GetHistoryTime(c echo.Context) error {
+	// 実行回数を取得
+	result := application.GetHistoryTime(c.QueryParam("repository_name"), c.QueryParam("started_at"), c.QueryParam("finished_at"))
+	return c.JSON(http.StatusOK, result)
+}

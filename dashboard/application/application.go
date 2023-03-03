@@ -64,6 +64,13 @@ func GetHistoryCount(repositoryName string, startedAt string, finishedAt string)
 	return result
 }
 
+// リポジトリごとの実行時間を取得する
+func GetHistoryTime(repositoryName string, startedAt string, finishedAt string) *custom.HistoryTimeResponse {
+	result := new(custom.HistoryTimeResponse)
+	result.Times = database.GetHistryTime(repositoryName, startedAt, finishedAt)
+	return result
+}
+
 func NowJST() *time.Time {
 	jst, err := time.LoadLocation("Asia/Tokyo")
 	if err != nil {

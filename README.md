@@ -49,7 +49,7 @@
   docker compose start postgres
   docker compose start pgweb
   cd dashboard
-  DATABASE_URL=postgres://appuser:password@localhost:5432/github-actions?sslmode=disable go run .
+  DATABASE_URL=postgres://appuser:password@localhost:5432/github-actions?sslmode=disable\&TimeZone=Asia/Tokyo go run .
   ```
 
 - ローカルアプリビルド実行

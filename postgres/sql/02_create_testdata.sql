@@ -17,7 +17,10 @@ INSERT INTO
   histories(repository_id, run_id, workflow_ref, job_name, run_attempt, status, started_at, finished_at)
 VALUES
   ('test1_id', 'run_id1-2', '.github/workflows/workflow1-2@ref1-2', 'job1-2', '1', 'FINISHED', '2023-02-22T03:05Z', '2023-02-22T03:10Z');
-
+INSERT INTO
+  histories(repository_id, run_id, workflow_ref, job_name, run_attempt, status, started_at, finished_at)
+VALUES
+  ('test1_id', 'run_id1-3', '.github/workflows/workflow1-2@ref1-2', 'job1-2', '1', 'FINISHED', '2023-02-22T04:05Z', '2023-02-23T04:05Z');
 -- test2リポジトリの実行履歴
 INSERT INTO
   histories(repository_id, run_id, workflow_ref, job_name, run_attempt, status, started_at, finished_at)

@@ -112,7 +112,8 @@ func CreateRepository(repository *model.Repository) *model.Repository {
 
 func GetHistryCount(repositoryName string, startedAt string, finishedAt string) *[]custom.HistoryCounter {
 	result := []custom.HistoryCounter{}
-	sql := db.Table("histories").Select("repositories.repository_name, count(1) as count").Joins("left join repositories on repositories.repository_id = histories.repository_id")
+	sql := db.Table("histories").Select("repositories.repository_name, count(1) as count")
+	sql.Joins("left join repositories on repositories.repository_id = histories.repository_id")
 
 	if repositoryName != "" {
 		sql.Where("repository_name LIKE ?", repositoryName+"%")
@@ -127,6 +128,29 @@ func GetHistryCount(repositoryName string, startedAt string, finishedAt string) 
 	}
 
 	sql.Group("repositories.repository_name").Order("count desc").Scan(&result)
+
+	return &result
+}
+
+func GetHistryTime(repositoryName string, startedAt string, finishedAt string) *[]custom.HistoryTime {
+	result := []custom.HistoryTime{}
+	sql := db.Table("histories").Select("repositories.repository_name, sum(extract(epoch from finished_at) - extract(epoch from started_at)) as seconds")
+	sql.Joins("left join repositories on repositories.repository_id = histories.repository_id")
+	sql.Where("status = ?", "FINISHED")
+
+	if repositoryName != "" {
+		sql.Where("repository_name LIKE ?", repositoryName+"%")
+	}
+
+	if startedAt != "" {
+		sql.Where("started_at >= ?", startedAt)
+	}
+
+	if finishedAt != "" {
+		sql.Where("finished_at <= ?", finishedAt)
+	}
+
+	sql.Group("repositories.repository_name").Order("seconds desc").Scan(&result)
 
 	return &result
 }

@@ -134,7 +134,7 @@ func GetHistryCount(repositoryName string, startedAt string, finishedAt string) 
 
 func GetHistryTime(repositoryName string, startedAt string, finishedAt string) *[]custom.HistoryTime {
 	result := []custom.HistoryTime{}
-	sql := db.Table("histories").Select("repositories.repository_name, sum(extract(epoch from finished_at) - extract(epoch from started_at)) as seconds")
+	sql := db.Table("histories").Select("repositories.repository_name, round(sum(extract(epoch from finished_at) - extract(epoch from started_at))) as seconds")
 	sql.Joins("left join repositories on repositories.repository_id = histories.repository_id")
 	sql.Where("status = ?", "FINISHED")
 

@@ -43,7 +43,7 @@ func PostHistory(c echo.Context) error {
 
 // 実行履歴を更新する
 // PUT: /actions/history
-// { repository_id: <string>, run_id: <string> }
+// { repository_id: <string>, run_id: <string>, job_name: <string>, run_attempt: <string> }
 func PutHistory(c echo.Context) error {
 	// WebSocketを確立したブラウザへ更新を通知
 	websocket.IsUpdated = true

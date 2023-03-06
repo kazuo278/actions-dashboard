@@ -5,7 +5,8 @@
 - ダッシュボード
   - http://${DASHBOARD_APP_HOST}/dashboard
 
-- 実行履歴登録
+- 実行履歴登録  
+  詳細はAPI仕様は、[openapi.yaml](./dashboard/openapi.yaml)を参照。
   - ジョブ実行開始履歴の登録
 
     ```sh
@@ -61,4 +62,3 @@
   cd ..
   docker compose -f dokcer-compose-local.yaml up
   ```
-

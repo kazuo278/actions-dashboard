@@ -19,5 +19,6 @@ func Init() {
 	e.PUT("/actions/history", rest.PutHistory)
 	e.GET("/actions/count", rest.GetHistoryCount)
 	e.GET("/actions/time", rest.GetHistoryTime)
+	e.POST("/actions/runner/registration-token", rest.PostRunnerRegistrationToken)
 	e.Logger.Fatal(e.Start(":8080"))
 }

@@ -200,6 +200,24 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/HistoryTimeResponse'
+  /actions/runner/registration-token:
+    post:
+      summary: Runner登録トークン取得
+      description: Runner登録トークンを取得する
+      requestBody:
+        description: Runner登録トークン取得オブジェクト
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationTokenRequest'
+        required: true
+      responses:
+        201:
+          description: 正常応答
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistrationTokenResponse'
 components:
   schemas:
     History:
@@ -288,3 +306,18 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/HistoryTime'
+    RegistrationTokenRequest:
+      type: object
+      properties:
+        organization_name:
+          type: string
+        organization_key:
+          type: string
+    RegistrationTokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        expires_at:
+          type: string
+          format: date-time

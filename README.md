@@ -36,17 +36,31 @@
     EOM
     ```
 
+- RUNNER 登録トークン生成
+
+    `$ORGANIZATION_TOKEN_KEY`値で登録されたDockerシークレットからトークンまたは、環境変数からトークンを取得します。  
+    Dockerシークレットが存在しない場合、環境変数から取得します。
+
+    ```sh
+    $ curl -X PUT ${DASHBOARD_APP_HOST}/actions/runner/registration-token -H 'Content-Type: application/json' -d @- <<EOM
+    {
+      "organization_name":"$ORGANIZATION_NAME",
+      "organization_key":"$ORGANIZATION_TOKEN_KEY"
+    }
+    EOM
+    ```
+
 ## アプリ実行
 
 - コンテナ実行
 
-  ```
+  ```sh
   docker compose up
   ```
 
 - ローカル実行(開発モード)
 
-  ```
+  ```sh
   docker compose start postgres
   docker compose start pgweb
   cd dashboard
